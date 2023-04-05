@@ -15,6 +15,27 @@ resources (or publish your research, for that matter) or risk being proven
 wrong by someone who re-analysed your data with more appropriate and/or updated
 methodology or worse yet, have your data contribute to your field of research.
 
+## Conda
+
+With tools like [Conda](https://docs.conda.io/en/latest/), it is an uphill
+battle against research parasites. Conda makes it easy to install the necessary
+tools to download data from various sources. Since Conda can become very slow
+when solving dependencies, one should use
+[Mamba](https://github.com/mamba-org/mamba), which is a faster version of
+Conda, and create new environments for a set of tools.
+
+Below are some useful tools for downloading sequencing data that can be
+installed using Conda/Mamba into a new environment called research_parasite.
+
+```console
+mamba create \
+   -n research_parasite \
+   -c Bioconda -c conda-forge \
+   parallel-fastq-dump awscli sra-tools entrez-direct
+
+conda activate research_parasite
+```
+
 ## Sequence Read Archive
 
 The [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra) (SRA) is the
@@ -25,7 +46,7 @@ SRA](https://www.ncbi.nlm.nih.gov/sra/docs/sradownload/). You would first have
 to [install the SRA
 Toolkit](https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit),
 which is simply downloading a tarball (and adding the `bin` directory to your
-`PATH`).
+`PATH`) or by using [Conda](#conda).
 
 For example, a research parasite using CentOS can simply download the tarball
 and use the toolkit.
@@ -116,22 +137,29 @@ time ../sratoolkit.3.0.1-centos_linux64/bin/fasterq-dump --split-files SRR390728
 is not part of the SRA Toolkit, can be used to download blocks in parallel;
 blocks can be specified by using `-N` (Minimum spot id) and `-X` (Maximum spot
 id). The recommended way to install `parallel-fastq-dump` is by using Conda (or
-Mamba) and the command below installs the tool in its own environment. I have
-omitted the `--gzip` option to make a fairer comparison of the timing between
-`fastq-dump` and `fasterq-dump`, which do not gzip the output.
+Mamba); see the [Conda](#conda) section above. I have omitted the `--gzip`
+option to make a fairer comparison of the timing between `fastq-dump` and
+`fasterq-dump`, which did not gzip the output.
 
 ```console
-mamba create -n research_parasite -c Bioconda parallel-fastq-dump
 conda activate research_parasite
 time parallel-fastq-dump --sra-id SRR390728 --threads 8 --outdir out/ --split-files
 ```
 
-However, the fastest way a research parasite can download your SRA data is via
-AWS.
+Unfortunately, `parallel-fastq-dump` hung and I stopped the job.
+
+I found that the fastest way a research parasite can download your SRA data is
+via AWS. This requires the [AWS Command Line
+Interface](https://aws.amazon.com/cli/) and [SRA
+Toolkit](https://github.com/ncbi/sra-tools), which can be installed using
+[Conda](#conda). The data is downloaded in the `sra` format and `fasterq-dump`
+is used to convert `sra` to FASTQ.
+
+Note that no AWS credentials are needed, which is why `--no-sign-request` is
+used so that credentials will not be loaded.
 
 ```console
-mamba install -c conda-forge awscli
-mamba install -c bioconda sra-tools
+conda activate research_parasite
 
 time aws s3 sync s3://sra-pub-run-odp/sra/SRR390728 SRR390728 --no-sign-request
 # download: s3://sra-pub-run-odp/sra/SRR390728/SRR390728 to SRR390728/SRR390728
