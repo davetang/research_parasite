@@ -42,8 +42,18 @@ The [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra) (SRA) is the
 largest publicly available repository of high throughput sequencing data. If
 you generate sequencing data, remember not to deposit it here since it is quite
 easy to [download data from the
-SRA](https://www.ncbi.nlm.nih.gov/sra/docs/sradownload/). You would first have
-to [install the SRA
+SRA](https://www.ncbi.nlm.nih.gov/sra/docs/sradownload/).
+
+There are [four hierarchical
+levels](https://www.ncbi.nlm.nih.gov/sra/docs/srasearch/) of SRA entities and
+their accessions (where `#` indicates a sequence of numbers):
+
+1. STUDY with accessions in the form of SRP#, ERP#, or DRP#
+2. SAMPLE with accessions in the form of SRS#, ERS#, or DRS#
+3. EXPERIMENT with accessions in the form of SRX#, ERX#, or DRX#
+4. RUN with accessions in the form of SRR#, ERR#, or DRR#
+
+You would first have to [install the SRA
 Toolkit](https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit),
 which is simply downloading a tarball (and adding the `bin` directory to your
 `PATH`) or by using [Conda](#conda).
