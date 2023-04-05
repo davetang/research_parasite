@@ -191,3 +191,54 @@ time fasterq-dump ./SRR390728 --progress --threads 8 --split-files
 # user    1m21.257s
 # sys     0m17.675s
 ```
+
+## Entrez Direct
+
+[Entrez Direct](https://www.ncbi.nlm.nih.gov/books/NBK179288/) (EDirect) is a
+tool that provides access to NCBI's databases, such as its publication,
+sequence, structure, gene, variation, and expression databases.
+
+A primary concern of research parasites is as follows:
+
+> The first concern is that someone not involved in the generation and
+> collection of the data may not understand the choices made in defining the
+> parameters.
+
+While a research parasite can easily download parameters of a study, i.e. a
+study's metadata, using EDirect, it can be safely assumed that they have no
+knowledge of experimental design and/or lack the scientific rigor to research
+the methodology. Furthermore, it is definitely impossible for a research
+parasite to email/contact the original authors of a study for further
+clarification, so they will always be clueless leeches.
+
+Below are a list of commands that can be used to obtain metadata, for whatever
+good it will do for the research parasite.
+
+Download the metadata associated with a SRA Experiment ID.
+
+```console
+conda activate research_parasite
+esearch -db sra -query SRX079566 | efetch -format runinfo
+# Run,ReleaseDate,LoadDate,spots,bases,spots_with_mates,avgLength,size_MB,AssemblyName,download_path,Experiment,LibraryName,LibraryStrategy,LibrarySelection,LibrarySource,LibraryLayout,InsertSize,InsertDev,Platform,Model,SRAStudy,BioProject,Study_Pubmed_id,ProjectID,Sample,BioSample,SampleType,TaxID,ScientificName,SampleName,g1k_pop_code,source,g1k_analysis_group,Subject_ID,Sex,Disease,Tumor,Affection_Status,Analyte_Type,Histological_Type,Body_Site,CenterName,Submission,dbgap_study_accession,Consent,RunHash,ReadHash
+# SRR292241,2011-06-24 15:12:07,2015-06-28 00:33:07,9721384,699939648,9721384,72,956,,https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-run-32/SRR000/292/SRR292241/SRR292241.3,SRX079566,HS0798,RNA-Seq,cDNA,TRANSCRIPTOMIC,PAIRED,0,0,ILLUMINA,Illumina Genome Analyzer IIx,SRP020237,PRJNA172563,,172563,SRS212581,SAMN00630374,simple,9606,Homo sapiens,HS0798,,,,,,,no,,,,,BCCAGSC,SRA039051,,public,0CDE83A17F8054DF7149F7407B49F82A,D87E6B8E105E190E4C939C490575028E
+# SRR390728,2011-12-21 19:11:28,2022-12-22 12:23:54,7178576,516857472,7178576,72,185,GCF_000001405.12,https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-zq-20/SRR000/390/SRR390728/SRR390728.lite.2,SRX079566,HS0798,RNA-Seq,cDNA,TRANSCRIPTOMIC,PAIRED,0,0,ILLUMINA,Illumina Genome Analyzer IIx,SRP020237,PRJNA172563,,172563,SRS212581,SAMN00630374,simple,9606,Homo sapiens,HS0798,,,,,,,no,,,,,BCCAGSC,SRA039051,,public,6ECEAB01ACBA62F942073E84603E8756,8BF399452ED769A11B9A2BC869F941B0
+```
+
+The above command can be piped to other commands to get a list of the SRA Run
+IDs associated with an SRA Experiment ID or SRA Study ID.
+
+```console
+esearch -db sra -query SRX079566 \
+   | efetch -format runinfo \
+   | cut -f1 -d',' \
+   | grep -v "^Run"
+# SRR292241
+# SRR390728
+````
+
+Get more information on a sample using the biosample ID.
+
+```console
+esummary -db biosample -id SRS212581
+# XML output
+```
