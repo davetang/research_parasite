@@ -5,6 +5,7 @@ Table of Contents
    * [Conda](#conda)
    * [Sequence Read Archive](#sequence-read-archive)
       * [Useful resources](#useful-resources)
+   * [Aspera Connect](#aspera-connect)
    * [European Nucleotide Archive](#european-nucleotide-archive)
    * [DNA Data Bank of Japan](#dna-data-bank-of-japan)
    * [Entrez Direct](#entrez-direct)
@@ -209,6 +210,32 @@ time fasterq-dump ./SRR390728 --progress --threads 8 --split-files
 
 * The [SRA Explorer](https://sra-explorer.info/) can be used to search for
   specific datasets within the SRA.
+
+## Aspera Connect
+
+IBM Aspera Connect ([acquired by IBM in
+2014](https://en.wikipedia.org/wiki/Aspera_(company))) is a high-performance
+transfer client. I created a [Docker
+image](https://hub.docker.com/r/davetang/aspera_connect) for the tool; see the
+[Dockerfile](https://github.com/davetang/learning_docker/blob/main/aspera_connect/Dockerfile)
+for more information.
+
+Start a container and download the FASTQ files using Aspera Connect.
+
+```console
+docker run --rm -it -u parasite davetang/aspera_connect:4.2.5.306 /bin/bash
+
+cd
+time ascp -QT -l 300m -P33001 -i $HOME/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_1.fastq.gz .
+# real    0m16.839s
+# user    0m1.308s
+# sys     0m9.536s
+
+time ascp -QT -l 300m -P33001 -i $HOME/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_2.fastq.gz .
+# real    0m17.668s
+# user    0m1.177s
+# sys     0m8.981s
+```
 
 ## European Nucleotide Archive
 
