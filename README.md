@@ -1,3 +1,16 @@
+Table of Contents
+=================
+
+* [Research parasite](#research-parasite)
+   * [Conda](#conda)
+   * [Sequence Read Archive](#sequence-read-archive)
+      * [Useful resources](#useful-resources)
+   * [European Nucleotide Archive](#european-nucleotide-archive)
+   * [DNA Data Bank of Japan](#dna-data-bank-of-japan)
+   * [Entrez Direct](#entrez-direct)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
+
 # Research parasite
 
 [Research parasites](https://www.nejm.org/doi/10.1056/NEJMe1516564) are:
@@ -190,6 +203,51 @@ time fasterq-dump ./SRR390728 --progress --threads 8 --split-files
 # real    2m39.493s
 # user    1m21.257s
 # sys     0m17.675s
+```
+
+### Useful resources
+
+* The [SRA Explorer](https://sra-explorer.info/) can be used to search for
+  specific datasets within the SRA.
+
+## European Nucleotide Archive
+
+The European Nucleotide Archive (ENA) provides a comprehensive record of the
+world’s nucleotide sequencing information, covering raw sequencing data,
+sequence assembly information and functional annotation.
+
+The [SRA Explorer](https://sra-explorer.info/) can be used to generate download
+links for FASTQ files.
+
+```console
+time wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR390/SRR390728/SRR390728_1.fastq.gz
+# snipped
+# real    0m59.909s
+# user    0m0.108s
+# sys     0m1.073s
+
+time wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR390/SRR390728/SRR390728_2.fastq.gz
+# snipped
+# real    1m12.205s
+# user    0m0.077s
+# sys     0m0.898s
+```
+
+## DNA Data Bank of Japan
+
+The [DNA Data Bank of Japan](https://www.ddbj.nig.ac.jp/about/index-e.html)
+(DDBJ) is a biological database that collects DNA sequences. The [DDBJ search
+page](https://ddbj.nig.ac.jp/search) can be used to find download links. There
+were no FASTQ files for SRR390728, so the `sra` file was downloaded and
+converted into FASTQ. (I also checked another SRA Run and FASTQ files were not
+available too; in the past, I could directly download FASTQ files from DDBJ.)
+
+```console
+time wget ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sralite/ByExp/litesra/SRX/SRX079/SRX079566/SRR390728/SRR390728.sra
+# snipped
+# real    0m12.608s
+# user    0m0.075s
+# sys     0m0.748s
 ```
 
 ## Entrez Direct
