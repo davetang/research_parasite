@@ -8,7 +8,9 @@ Table of Contents
    * [Aspera Connect](#aspera-connect)
    * [European Nucleotide Archive](#european-nucleotide-archive)
    * [DNA Data Bank of Japan](#dna-data-bank-of-japan)
-   * [Entrez Direct](#entrez-direct)
+   * [Metadata](#metadata)
+      * [Entrez Direct](#entrez-direct)
+      * [ffq](#ffq)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
