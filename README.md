@@ -277,11 +277,7 @@ time wget ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sralite/ByExp/litesra/SRX/S
 # sys     0m0.748s
 ```
 
-## Entrez Direct
-
-[Entrez Direct](https://www.ncbi.nlm.nih.gov/books/NBK179288/) (EDirect) is a
-tool that provides access to NCBI's databases, such as its publication,
-sequence, structure, gene, variation, and expression databases.
+## Metadata
 
 A primary concern of research parasites is as follows:
 
@@ -290,14 +286,23 @@ A primary concern of research parasites is as follows:
 > parameters.
 
 While a research parasite can easily download parameters of a study, i.e. a
-study's metadata, using EDirect, it can be safely assumed that they have no
-knowledge of experimental design and/or lack the scientific rigor to research
-the methodology. Furthermore, it is definitely impossible for a research
-parasite to email/contact the original authors of a study for further
-clarification, so they will always be clueless leeches.
+study's metadata, it can be safely assumed that they have no knowledge of
+experimental design and/or lack the scientific rigor to research the
+methodology when they do not understand something. Furthermore, it is
+definitely impossible for a research parasite to email/contact the original
+authors of a study for further clarification. Can you even imagine opening up a
+channel of communication and potentially collaborating with these clueless
+leeches!?
 
-Below are a list of commands that can be used to obtain metadata, for whatever
-good it will do for the research parasite.
+This section includes some tools that can be used to obtain metadata, for
+whatever good it will do for the research parasite.
+
+### Entrez Direct
+
+[Entrez Direct](https://www.ncbi.nlm.nih.gov/books/NBK179288/) (EDirect) is a
+tool that provides access to NCBI's databases, such as its publication,
+sequence, structure, gene, variation, and expression databases. Below are some
+useful commands.
 
 Download the metadata associated with a SRA Experiment ID.
 
@@ -326,4 +331,75 @@ Get more information on a sample using the biosample ID.
 ```console
 esummary -db biosample -id SRS212581
 # XML output
+```
+
+### ffq
+
+[ffq](https://github.com/pachterlab/ffq) is a tool that can be used to fetch
+metadata from the following databases:
+
+* Gene Expression Omnibus (GEO)
+* Sequence Read Archive (SRA)
+* European Molecular Biology Laboratory's European Bioinformatics Institute (EMBL-EBI)
+* DNA Data Bank of Japan (DDBJ)
+* NIH Biosample
+* The Encyclopedia of DNA Elements (ENCODE)
+
+It can be easily installed using `pip`.
+
+```console
+pip install ffq
+```
+
+It requires one argument, which is an ID (or IDs) that corresponds to one or
+multiple SRA / GEO / ENCODE / ENA / EBI-EMBL / DDBJ / Biosample accessions,
+DOIs, or paper titles.
+
+```console
+ffq SRX079566
+# metadata in JSON format
+```
+
+To generate links to the raw data, specify the choice of host. (You can use a
+proper JSON parser to obtain the URLs more cleanly.)
+
+```console
+ffq --ftp SRX079566 | grep '"url"'
+# snipped
+#         "url": "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/SRR292241/SRR292241_1.fastq.gz"
+#         "url": "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/SRR292241/SRR292241_2.fastq.gz"
+#         "url": "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR390/SRR390728/SRR390728_1.fastq.gz"
+#         "url": "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR390/SRR390728/SRR390728_2.fastq.gz"
+
+ffq --aws SRX079566 | grep '"url"'
+# snipped
+#         "url": "https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR292241/SRR292241"
+#         "url": "s3://sra-pub-src-13/SRR292241/Run94367Lane6.srf"
+#         "url": "s3://sra-pub-src-15/SRR390728/30KWMAAXX_6.sorted_withJunctionsOnGenome_dupsFlagged.bam.1"
+#         "url": "https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR390728/SRR390728"
+
+ffq --gcp SRX079566 | grep '"url"'
+# snipped
+#         "url": "gs://sra-pub-crun-3/SRR292241/SRR292241.3"
+#         "url": "gs://sra-pub-run-1/SRR390728/SRR390728.3"
+
+ffq --ncbi SRX079566 | grep '"url"'
+# snipped
+#         "url": "https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-run-32/SRR000/292/SRR292241/SRR292241.3"
+#         "url": "https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-zq-20/SRR000/390/SRR390728/SRR390728.lite.2"
+```
+
+I [submitted a GitHub Issue](https://github.com/pachterlab/ffq/issues/59) that
+suggested an `--aspera` option. But for now you can generate the Aspera URLs
+using `sed`.
+
+```console
+ffq --ftp SRX079566 \
+   | grep '"url"' \
+   | sed 's/ftp:\/\/ftp.sra.ebi.ac.uk\//era-fasp@fasp.sra.ebi.ac.uk:/'
+# snipped
+#         "url": "era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR292/SRR292241/SRR292241_1.fastq.gz"
+#         "url": "era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR292/SRR292241/SRR292241_2.fastq.gz"
+#         "url": "era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_1.fastq.gz"
+#         "url": "era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_2.fastq.gz"
 ```
