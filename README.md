@@ -433,3 +433,15 @@ bash download.sh
 # Completed: 99628K bytes transferred in 7 seconds
 #  (105342K bits/sec), in 1 file.
 ```
+
+A list of accessions can be saved in a file, e.g. `list.txt`, used as input to
+`ffq`, and piped to `aspera.sh` to generate a download file.
+
+```console
+ffq --ftp $(cat list.txt) | ./script/aspera.sh - > download.sh
+
+tail -3 download.sh
+ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/097/SRR22891597/SRR22891597_2.fastq.gz .
+ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/098/SRR22891598/SRR22891598_1.fastq.gz .
+ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/098/SRR22891598/SRR22891598_2.fastq.gz .
+```
