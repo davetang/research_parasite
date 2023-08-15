@@ -419,4 +419,17 @@ cat download.sh
 
 docker run --rm -it -u parasite -v $(pwd):$(pwd) -w $(pwd) davetang/aspera_connect:4.2.5.306 /bin/bash
 bash download.sh
+
+# SRR292241_1.fastq.gz                                                                                                                                                           100%  369MB  238Mb/s    00:13
+# Completed: 378151K bytes transferred in 13 seconds
+#  (227709K bits/sec), in 1 file.
+# SRR292241_2.fastq.gz                                                                                                                                                           100%  376MB  272Mb/s    00:13
+# Completed: 385855K bytes transferred in 14 seconds
+#  (218815K bits/sec), in 1 file.
+# SRR390728_1.fastq.gz                                                                                                                                                           100%   96MB  265Mb/s    00:05
+# Completed: 99006K bytes transferred in 5 seconds
+#  (141136K bits/sec), in 1 file.
+# SRR390728_2.fastq.gz                                                                                                                                                           100%   97MB  261Mb/s    00:07
+# Completed: 99628K bytes transferred in 7 seconds
+#  (105342K bits/sec), in 1 file.
 ```
