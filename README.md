@@ -405,3 +405,18 @@ ffq --ftp SRX079566 \
 #         "url": "era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_1.fastq.gz"
 #         "url": "era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_2.fastq.gz"
 ```
+
+The script `aspera.sh` will parse `ffq`'s output to generate a download script
+for use with the [Aspera connect Docker container](#aspera-connect).
+
+```console
+ffq --ftp SRX079566 | script/aspera.sh - > download.sh
+cat download.sh
+# ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR292/SRR292241/SRR292241_1.fastq.gz .
+# ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR292/SRR292241/SRR292241_2.fastq.gz .
+# ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_1.fastq.gz .
+# ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_2.fastq.gz .
+
+docker run --rm -it -u parasite -v $(pwd):$(pwd) -w $(pwd) davetang/aspera_connect:4.2.5.306 /bin/bash
+bash download.sh
+```
