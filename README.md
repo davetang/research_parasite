@@ -217,10 +217,12 @@ time fasterq-dump ./SRR390728 --progress --threads 8 --split-files
 
 IBM Aspera Connect ([acquired by IBM in
 2014](https://en.wikipedia.org/wiki/Aspera_(company))) is a high-performance
-transfer client. I created a [Docker
+transfer client. Aspera Connect requires more updated version of C libraries,
+which is why I created a [Docker
 image](https://hub.docker.com/r/davetang/aspera_connect) for the tool; see the
 [Dockerfile](https://github.com/davetang/learning_docker/blob/main/aspera_connect/Dockerfile)
-for more information.
+for more information. (If you want to install the tool for yourself, you can
+use the `install_aspera.sh` script in the `script` directory.)
 
 Start a container and download the FASTQ files using Aspera Connect.
 
