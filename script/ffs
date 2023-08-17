@@ -22,6 +22,7 @@ Commands:
 
      ftp            download using wget
      aspera         download using ascp
+     aws            download using aws
      help           display this help message
      version        display version
 
@@ -36,6 +37,10 @@ sub_ftp(){
 
 sub_aspera(){
    ${script_dir}/aspera.sh $@
+}
+
+sub_aws(){
+   ${script_dir}/aws.sh $@
 }
 
 sub_version(){
