@@ -11,6 +11,7 @@ Table of Contents
    * [Metadata](#metadata)
       * [Entrez Direct](#entrez-direct)
       * [ffq](#ffq)
+      * [ffs](#ffs)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -408,19 +409,50 @@ ffq --ftp SRX079566 \
 #         "url": "era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_2.fastq.gz"
 ```
 
-The script `aspera.sh` will parse `ffq`'s output to generate a download script
-for use with the [Aspera connect Docker container](#aspera-connect).
+### ffs
+
+The `ffs` script will parse `ffq`'s output to generate a download script.
+
+Generate a script to download from the FTP site.
 
 ```console
-ffq --ftp SRX079566 | script/aspera.sh - > download.sh
-cat download.sh
-# ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR292/SRR292241/SRR292241_1.fastq.gz .
-# ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR292/SRR292241/SRR292241_2.fastq.gz .
-# ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_1.fastq.gz .
-# ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_2.fastq.gz .
+ffq --ftp SRX079566 | script/ffs ftp - > ftp.sh
+cat ftp.sh
+# if [[ ! -f SRR292241_1.fastq.gz ]]; then
+#    wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/SRR292241/SRR292241_1.fastq.gz
+# fi
+# if [[ ! -f SRR292241_2.fastq.gz ]]; then
+#    wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR292/SRR292241/SRR292241_2.fastq.gz
+# fi
+# if [[ ! -f SRR390728_1.fastq.gz ]]; then
+#    wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR390/SRR390728/SRR390728_1.fastq.gz
+# fi
+# if [[ ! -f SRR390728_2.fastq.gz ]]; then
+#    wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR390/SRR390728/SRR390728_2.fastq.gz
+# fi
+```
+
+Generate a download script for use with the [Aspera connect Docker
+container](#aspera-connect).
+
+```console
+ffq --ftp SRX079566 | script/ffs aspera - > aspera.sh
+cat aspera.sh
+# if [[ ! -f SRR292241_1.fastq.gz ]]; then
+#    ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR292/SRR292241/SRR292241_1.fastq.gz .
+# fi
+# if [[ ! -f SRR292241_2.fastq.gz ]]; then
+#    ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR292/SRR292241/SRR292241_2.fastq.gz .
+# fi
+# if [[ ! -f SRR390728_1.fastq.gz ]]; then
+#    ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_1.fastq.gz .
+# fi
+# if [[ ! -f SRR390728_2.fastq.gz ]]; then
+#    ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR390/SRR390728/SRR390728_2.fastq.gz .
+# fi
 
 docker run --rm -it -u parasite -v $(pwd):$(pwd) -w $(pwd) davetang/aspera_connect:4.2.5.306 /bin/bash
-bash download.sh
+bash aspera.sh
 
 # SRR292241_1.fastq.gz                                                                                                                                                           100%  369MB  238Mb/s    00:13
 # Completed: 378151K bytes transferred in 13 seconds
@@ -437,13 +469,20 @@ bash download.sh
 ```
 
 A list of accessions can be saved in a file, e.g. `list.txt`, used as input to
-`ffq`, and piped to `aspera.sh` to generate a download file.
+`ffq`, and piped to `ffs` to generate a download file with all the accessions.
 
 ```console
-ffq --ftp $(cat list.txt) | ./script/aspera.sh - > download.sh
+ffq --ftp $(cat list.txt) | ./script/ffs aspera - > list.sh
 
-tail -3 download.sh
-ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/097/SRR22891597/SRR22891597_2.fastq.gz .
-ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/098/SRR22891598/SRR22891598_1.fastq.gz .
-ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/098/SRR22891598/SRR22891598_2.fastq.gz .
+tail list.sh
+# fi
+# if [[ ! -f SRR22891597_2.fastq.gz ]]; then
+#    ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/097/SRR22891597/SRR22891597_2.fastq.gz .
+# fi
+# if [[ ! -f SRR22891598_1.fastq.gz ]]; then
+#    ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/098/SRR22891598/SRR22891598_1.fastq.gz .
+# fi
+# if [[ ! -f SRR22891598_2.fastq.gz ]]; then
+#    ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/098/SRR22891598/SRR22891598_2.fastq.gz .
+# fi
 ```

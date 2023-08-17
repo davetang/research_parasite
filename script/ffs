@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+#
+# Written by Dave Tang
+# Year 2023
+#
+set -euo pipefail
+
+program=$(basename $0)
+script_dir=$(dirname $0)
+version=0.1.0
+description="Generate download script from ffq"
+
+sub_help(){
+>&2 cat << EOF
+
+Program: ${program} (${description})
+Version: ${version}
+
+Usage:   $0 <command> [options]
+
+Commands:
+
+     ftp            download using wget
+     aspera         download using ascp
+     help           display this help message
+     version        display version
+
+EOF
+exit 1
+}
+
+# call another script
+sub_ftp(){
+   ${script_dir}/ftp.sh $@
+}
+
+sub_aspera(){
+   ${script_dir}/aspera.sh $@
+}
+
+sub_version(){
+   >&2 echo ${version}
+}
+
+if [[ $# -lt 1 ]]; then
+   sub_help
+fi
+
+subcommand=$1
+shift
+
+if [[ $(type -t sub_${subcommand}) == function ]]; then
+   sub_${subcommand} $@
+else
+   >&2 echo "[main] unrecognised command '${subcommand}'"
+   exit 1
+fi
+
+exit 0
