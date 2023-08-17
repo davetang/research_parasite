@@ -34,6 +34,13 @@ input=$1
 cat ${input} \
    | grep '"url"' \
    | sed 's/ftp:\/\/ftp.sra.ebi.ac.uk\//era-fasp@fasp.sra.ebi.ac.uk:/' \
-   | perl -lane '$l = $F[1]; $l =~ s/"//g; print "ascp -QT -l 300m -P33001 -i \${HOME}/asperaweb_id_dsa.openssh $l ."'
+   | perl -lane '
+      $l = $F[1];
+      $l =~ s/"//g;
+      ($f = $l) =~ s/.*\/(.*)$/$1/;
+      print "if [[ ! -f $f ]]; then";
+      print "   ascp -QT -l 300m -P33001 -i \${HOME}/asperaweb_id_dsa.openssh $l .";
+      print "fi";
+   '
 
 exit 0
