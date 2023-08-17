@@ -9,17 +9,17 @@ usage(){
 >&2 cat << EOF
    Usage
 
-            $ $0 (<json> | <stdin>)
+            $ ffs ftp (<json> | <stdin>)
 
    Examples
 
             Read from a file
 
-            $ $0 ffq.json
+            $ ffs ftp ffq.json
 
             Read from STDIN
 
-            $ ffq --ftp SRR22891572 | $0 -
+            $ ffq --ftp SRR22891572 | ffs ftp -
 
 EOF
 exit 1
