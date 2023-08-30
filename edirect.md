@@ -44,7 +44,9 @@ independently.
   -group, -block, and -subset limit element exploration to selected XML subregions.
 ```
 
-## Example
+## Examples
+
+### Experiment conditions
 
 Metadata for [PRJNA860770](https://www.ncbi.nlm.nih.gov/bioproject/860770)
 (data published in [JCI](https://www.jci.org/articles/view/164428)).
@@ -98,4 +100,24 @@ esearch -db sra -query PRJNA860770 \
 # SRR22891596     SRS16280668     Trastuzumab-Sensitive
 # SRR22891597     SRS16280667     Trastuzumab-Sensitive
 # SRR22891598     SRS16280666     Trastuzumab-Sensitive
+```
+
+### Find publications
+
+Find articles on SARS-CoV-2 XBB.
+
+```console
+esearch -db pubmed -query "SARS-CoV-2 XBB" \
+   | efetch -format xml \
+   | xtract -pattern PubmedArticle -element MedlineCitation \
+      -block MedlineCitation -element PMID \
+      -block Article -element ArticleTitle \
+      -block Journal -element Title \
+      -block PubDate -element Year,Month,Day \
+   | sed 's/^/https:\/\/pubmed.ncbi.nlm.nih.gov\//' > xbb.tsv
+
+head -3 xbb.tsv
+# https://pubmed.ncbi.nlm.nih.gov/37640233	Modeling the XBB strain of SARS-CoV-2: Competition between variants and impact of reinfection.	Journal of theoretical biology	2023	Aug	26
+# https://pubmed.ncbi.nlm.nih.gov/37635002	Recombinant spike protein vaccines coupled with adjuvants that have different modes of action induce protective immunity against SARS-CoV-2.	Vaccine	2023	Aug	25
+# https://pubmed.ncbi.nlm.nih.gov/37633965	Characterizing SARS-CoV-2 neutralization profiles after bivalent boosting using antigenic cartography.	Nature communications	2023	Aug	26
 ```
