@@ -485,9 +485,9 @@ Let's say someone actually had the nerve to try and re-use data for the purposes
 
 > Gene expression values for 87 lung adenocarcinomas and 77 adjacent normal tissues can be viewed at http://gene.gmi.ac.kr and at the NCBI Gene Expression Omnibus (GEO) (http://www.ncbi.nlm.nih.gov/geo/) under accession number GSE40419.
 
-The GEO accession number can be used to [search for associated datasets](https://www.ncbi.nlm.nih.gov/gds/?term=GSE40419[Accession]), where one can find sample IDs (e.g. [GSM993771](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM993771), which is linked to the associated experiment ([ERX140426](https://www.ncbi.nlm.nih.gov/sra?term=ERX140426).
+The GEO accession number can be used to [search for associated datasets](https://www.ncbi.nlm.nih.gov/gds/?term=GSE40419[Accession]), where one can find sample IDs (e.g. [GSM993771](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM993771), which is linked to the associated experiment ([ERX140426](https://www.ncbi.nlm.nih.gov/sra?term=ERX140426)).
 
-Now using the tools described in this document, one can quickly download one dataset!
+Now using the tools described in this document, one can quickly download a dataset from the paper!
 
 ```console
 ffq --ftp ERX140426 | script/ffs aspera - > ERX140426.sh
