@@ -494,3 +494,49 @@ ffq --ftp ERX140426 | script/ffs aspera - > ERX140426.sh
 
 docker run --rm --env PATH=$PATH:/home/parasite/.aspera/connect/bin/ -v $(pwd):$(pwd) -w $(pwd) -u parasite davetang/aspera_connect:4.2.5.306 /bin/bash ./ERX140426.sh
 ```
+```
+Completed: 4232933K bytes transferred in 2243 seconds
+ (15457K bits/sec), in 1 file.
+Completed: 4292000K bytes transferred in 2947 seconds
+ (11928K bits/sec), in 1 file.
+```
+
+Aspera used to be very fast (and was the fastest approach) but perhaps there has been too many research parasites using it and they have limited the speed?
+
+```console
+bc -l<<<2243/60
+```
+```
+37.38333333333333333333
+```
+```console
+bc -l<<<2947/60
+```
+```
+49.11666666666666666666
+```
+
+Downloading using the FTP is much quicker now.
+
+```console
+wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR164/ERR164549/ERR164549_1.fastq.gz
+```
+```
+ERR164549_1.fastq.gz 100%[=======================================================>]   4.04G  12.4MB/s    in 7m 4s
+```
+```console
+wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR164/ERR164549/ERR164549_2.fastq.gz
+```
+```
+ERR164549_2.fastq.gz 100%[=======================================================>]   4.09G  11.4MB/s    in 7m 48s
+```
+
+Checksums.
+
+```console
+md5sum ERR164549_*
+```
+```
+03fc4414c511c9420e1b2614594e659e  ERR164549_1.fastq.gz
+6f9d710761ffa39fc45ab333c9b7c94f  ERR164549_2.fastq.gz
+```
