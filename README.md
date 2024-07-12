@@ -1,19 +1,17 @@
-Table of Contents
-=================
+## Table of Contents
 
-* [Research parasite](#research-parasite)
-   * [Conda](#conda)
-   * [Sequence Read Archive](#sequence-read-archive)
-      * [Useful resources](#useful-resources)
-   * [Aspera Connect](#aspera-connect)
-   * [European Nucleotide Archive](#european-nucleotide-archive)
-   * [DNA Data Bank of Japan](#dna-data-bank-of-japan)
-   * [Metadata](#metadata)
-      * [Entrez Direct](#entrez-direct)
-      * [ffq](#ffq)
-      * [ffs](#ffs)
-
-Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
+- [Research parasite](#research-parasite)
+  - [Conda](#conda)
+  - [Sequence Read Archive](#sequence-read-archive)
+    - [Useful resources](#useful-resources)
+  - [Aspera Connect](#aspera-connect)
+  - [European Nucleotide Archive](#european-nucleotide-archive)
+  - [DNA Data Bank of Japan](#dna-data-bank-of-japan)
+  - [Metadata](#metadata)
+    - [Entrez Direct](#entrez-direct)
+    - [ffq](#ffq)
+    - [ffs](#ffs)
+  - [Example](#example)
 
 # Research parasite
 
@@ -24,13 +22,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 > research productivity planned by the data gatherers, or even use the data to
 > try to disprove what the original investigators had posited.
 
-In the interests of science, we should never ever reuse data or heaven forbid,
-try to disprove each other. This repository contains notes on how research
-parasites may download your data. To protect yourself as a "front-line
-researcher" you should never deposit your data to any of the following
-resources (or publish your research, for that matter) or risk being proven
-wrong by someone who re-analysed your data with more appropriate and/or updated
-methodology or worse yet, have your data contribute to your field of research.
+In the interests of science, we should never ever reuse data or heaven forbid, try to disprove each other. This repository contains notes on how research parasites may download your data. To protect yourself as a "front-line researcher" you should never deposit your data to any of the following resources (or publish your research, for that matter) or risk being proven wrong by someone who re-analysed your data with more appropriate and/or updated methodology or worse yet, risk having your data contribute to your field of research.
 
 ## Conda
 
@@ -485,4 +477,20 @@ tail list.sh
 # if [[ ! -f SRR22891598_2.fastq.gz ]]; then
 #    ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/098/SRR22891598/SRR22891598_2.fastq.gz .
 # fi
+```
+
+## Example
+
+Let's say someone actually had the nerve to try and re-use data for the purposes of further understanding a disease (beyond the conclusions reached in the original publication) so that we can try to develop better therapeutics. They will look in the [paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3483540/) to see if the authors were foolish enough to deposit their data in a central repository.
+
+> Gene expression values for 87 lung adenocarcinomas and 77 adjacent normal tissues can be viewed at http://gene.gmi.ac.kr and at the NCBI Gene Expression Omnibus (GEO) (http://www.ncbi.nlm.nih.gov/geo/) under accession number GSE40419.
+
+The GEO accession number can be used to [search for associated datasets](https://www.ncbi.nlm.nih.gov/gds/?term=GSE40419[Accession]), where one can find sample IDs (e.g. [GSM993771](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM993771), which is linked to the associated experiment ([ERX140426](https://www.ncbi.nlm.nih.gov/sra?term=ERX140426).
+
+Now using the tools described in this document, one can quickly download one dataset!
+
+```console
+ffq --ftp ERX140426 | script/ffs aspera - > ERX140426.sh
+
+docker run --rm --env PATH=$PATH:/home/parasite/.aspera/connect/bin/ -v $(pwd):$(pwd) -w $(pwd) -u parasite davetang/aspera_connect:4.2.5.306 /bin/bash ./ERX140426.sh
 ```
