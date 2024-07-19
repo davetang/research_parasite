@@ -540,3 +540,28 @@ md5sum ERR164549_*
 03fc4414c511c9420e1b2614594e659e  ERR164549_1.fastq.gz
 6f9d710761ffa39fc45ab333c9b7c94f  ERR164549_2.fastq.gz
 ```
+
+ERX140426 is for `LC_S52_nor` (Adjacent lung normal cells); `LC_S52` (Lung cancer cells) is ERX140511. Download the corresponding sample too.
+
+```console
+ffq --ftp ERX140511 | grep '"url"'
+```
+```
+"url": "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR164/ERR164634/ERR164634_1.fastq.gz"
+"url": "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR164/ERR164634/ERR164634_2.fastq.gz"
+```
+
+Download using FTP.
+
+```console
+wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR164/ERR164634/ERR164634_1.fastq.gz
+wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR164/ERR164634/ERR164634_2.fastq.gz
+```
+
+Checksums
+
+```console
+md5sum ERR164634_*
+f33e261013c4bbc59b2045244a587a25  ERR164634_1.fastq.gz
+f9b543e99e1a5aa431695f6528beaa12  ERR164634_2.fastq.gz
+```
