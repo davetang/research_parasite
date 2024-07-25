@@ -3,6 +3,7 @@
 - [Research parasite](#research-parasite)
   - [Conda](#conda)
   - [Sequence Read Archive](#sequence-read-archive)
+    - [NCBI sralite.1](#ncbi-sralite1)
     - [Useful resources](#useful-resources)
   - [Aspera Connect](#aspera-connect)
   - [European Nucleotide Archive](#european-nucleotide-archive)
@@ -73,6 +74,13 @@ and use the toolkit.
 ```console
 wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-centos_linux64.tar.gz
 tar -xzf sratoolkit.current-centos_linux64.tar.gz
+```
+
+On Debian/Ubuntu.
+
+```console
+wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
+tar -xzf sratoolkit.current-ubuntu64.tar.gz
 ```
 
 The executables are stored in `sratoolkit.3.0.1-centos_linux64/bin` and to test
@@ -199,6 +207,29 @@ time fasterq-dump ./SRR390728 --progress --threads 8 --split-files
 # real    2m39.493s
 # user    1m21.257s
 # sys     0m17.675s
+```
+
+### NCBI sralite.1
+
+If you downloaded a `sralite.1` file, you would also use `fasterq-dump` to generate the FASTQ files.
+
+```console
+wget -c https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos5/sra-pub-zq-11/SRR001/216/SRR1216023/SRR1216023.sralite.1
+fasterq-dump --split-files SRR1216023.sralite.1
+```
+```
+spots read      : 9,578,089
+reads read      : 19,156,178
+reads written   : 19,156,178
+```
+
+You will need to gzip the files afterwards.
+
+```console
+ls SRR1216023_*
+```
+```
+SRR1216023_1.fastq  SRR1216023_2.fastq
 ```
 
 ### Useful resources
