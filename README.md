@@ -12,6 +12,7 @@
     - [Entrez Direct](#entrez-direct)
     - [ffq](#ffq)
     - [ffs](#ffs)
+  - [fetchngs](#fetchngs)
   - [Example](#example)
 
 # Research parasite
@@ -508,6 +509,67 @@ tail list.sh
 # if [[ ! -f SRR22891598_2.fastq.gz ]]; then
 #    ascp -QT -l 300m -P33001 -i ${HOME}/asperaweb_id_dsa.openssh era-fasp@fasp.sra.ebi.ac.uk:vol1/fastq/SRR228/098/SRR22891598/SRR22891598_2.fastq.gz .
 # fi
+```
+
+## fetchngs
+
+Install `nf-core/tools` first.
+
+```console
+pip install nf-core
+
+# upgrade
+pip install --upgrade nf-core
+```
+
+Find version.
+
+```console
+nf-core pipelines list | grep fetchngs
+```
+```
+                                          ,--./,-.
+          ___     __   __   __   ___     /,-._.--~\
+    |\ | |__  __ /  ` /  \ |__) |__         }  {
+    | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                          `._,._,'
+
+    nf-core/tools version 3.2.1 - https://nf-co.re
+
+
+│ fetchngs                  │   175 │         1.12.0 │   1 years ago │           - │ -                    │
+```
+
+Download `nf-core/fetchngs`.
+
+```console
+export NXF_SINGULARITY_CACHEDIR=/data/nxf_singularity
+
+nf-core pipelines download --revision 1.12.0 --outdir /data/nf-core/fetchngs --compress none --container-system singularity --parallel-downloads 4 fetchngs
+```
+
+Run `nf-core/fetchngs`.
+
+```console
+nextflow /data/nf-core/fetchngs/1_12_0/main.nf \
+   -profile singularity \
+   --input ids.csv \
+   --outdir data
+
+ll data/fastq
+```
+```
+total 828K
+-rw-r--r-- 1 dtang dtang  38K May 17 16:36 DRX024467_DRR026872.fastq.gz
+-rw-r--r-- 1 dtang dtang 8.0K May 17 16:36 ERX1188904_ERR1109373_2.fastq.gz
+-rw-r--r-- 1 dtang dtang 8.0K May 17 16:36 ERX1188904_ERR1109373_1.fastq.gz
+-rw-r--r-- 1 dtang dtang 592K May 17 16:36 SRX6725035_SRR9984183.fastq.gz
+-rw-r--r-- 1 dtang dtang  18K May 17 16:37 ERX1234253_ERR1160846.fastq.gz
+-rw-r--r-- 1 dtang dtang  16K May 17 16:37 SRX9626017_SRR13191702_2.fastq.gz
+-rw-r--r-- 1 dtang dtang  16K May 17 16:37 SRX9626017_SRR13191702_1.fastq.gz
+-rw-r--r-- 1 dtang dtang  61K May 17 16:37 DRX026011_DRR028935_2.fastq.gz
+-rw-r--r-- 1 dtang dtang  59K May 17 16:37 DRX026011_DRR028935_1.fastq.gz
+drwxr-xr-x 2 dtang dtang 4.0K May 17 16:37 md5
 ```
 
 ## Example
