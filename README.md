@@ -327,7 +327,7 @@ wget -c https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/da
 chmod 755 datasets dataformat
 ```
 
-Download [NC_004065.1](https://www.ncbi.nlm.nih.gov/nuccore/NC_004065):
+Download genome sequence of [NC_004065.1](https://www.ncbi.nlm.nih.gov/nuccore/NC_004065).
 
 ```console
 ./datasets download virus genome accession NC_004065.1 --include genome cds annotation
@@ -341,6 +341,20 @@ Archive:  ncbi_dataset.zip
   inflating: NC_004065.1/ncbi_dataset/data/virus_dataset.md
   inflating: NC_004065.1/ncbi_dataset/data/dataset_catalog.json
   inflating: NC_004065.1/md5sum.txt
+```
+
+Download gene reports.
+
+```console
+./datasets download gene accession NC_004065.1 --include product-report
+unzip -d NC_004065.1_gene ncbi_dataset.zip
+```
+
+Convert into TSV.
+
+```console
+./dataformat tsv gene --inputfile ./NC_004065.1_gene/ncbi_dataset/data/data_report.jsonl
+./dataformat tsv gene-product --inputfile ./NC_004065.1_gene/ncbi_dataset/data/product_report.jsonl
 ```
 
 ## Metadata
