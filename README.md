@@ -8,6 +8,7 @@
   - [Aspera Connect](#aspera-connect)
   - [European Nucleotide Archive](#european-nucleotide-archive)
   - [DNA Data Bank of Japan](#dna-data-bank-of-japan)
+  - [NCBI Datasets](#ncbi-datasets)
   - [Metadata](#metadata)
     - [Entrez Direct](#entrez-direct)
     - [ffq](#ffq)
@@ -304,6 +305,42 @@ time wget ftp://ftp.ddbj.nig.ac.jp/ddbj_database/dra/sralite/ByExp/litesra/SRX/S
 # real    0m12.608s
 # user    0m0.075s
 # sys     0m0.748s
+```
+
+## NCBI Datasets
+
+As advertised, [NCBI Datasets](https://www.ncbi.nlm.nih.gov/datasets/) is:
+
+> A one-stop shop for finding, browsing, and downloading genomic data
+
+The NCBI Datasets [command-line tools](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/command-line-tools/download-and-install/) (CLI) are `datasets` and `dataformat`.
+
+* Use `datasets` to download biological sequence data across all domains of life from NCBI.
+* Use `dataformat` to convert metadata from JSON Lines format to other formats.
+
+For x86_64/amd64, download the following files.
+
+```console
+wget -c https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/datasets
+wget -c https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/dataformat
+
+chmod 755 datasets dataformat
+```
+
+Download [NC_004065.1](https://www.ncbi.nlm.nih.gov/nuccore/NC_004065):
+
+```console
+./datasets download virus genome accession NC_004065.1 --include genome cds annotation
+unzip -d NC_004065.1 ncbi_dataset.zip
+```
+```
+Archive:  ncbi_dataset.zip
+  inflating: NC_004065.1/README.md
+  inflating: NC_004065.1/ncbi_dataset/data/data_report.jsonl
+  inflating: NC_004065.1/ncbi_dataset/data/genomic.fna
+  inflating: NC_004065.1/ncbi_dataset/data/virus_dataset.md
+  inflating: NC_004065.1/ncbi_dataset/data/dataset_catalog.json
+  inflating: NC_004065.1/md5sum.txt
 ```
 
 ## Metadata
